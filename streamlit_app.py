@@ -20,10 +20,13 @@ streamlit.dataframe(fruits_to_show)
 
 #New section to display fruityvice api responce
 streamlit.header("Fruityvice Fruit Advice!")
+#Adding a Text Entry Box and Send the Input to Fruityvice
+fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+streamlit.write('The user entered ', fruit_choice)
 import requests
 #fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
 #separate the base URL from the fruit name
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + "kiwi")
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 #streamlit.text(fruityvice_response.json()) --Raw JSON data
 
 # Normalize semi-structured JSON data into a flat table
