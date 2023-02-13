@@ -24,20 +24,28 @@ streamlit.dataframe(fruits_to_show)
 
 #New section to display fruityvice api responce
 streamlit.header("Fruityvice Fruit Advice!")
+try:
 #Adding a Text Entry Box and Send the Input to Fruityvice
-fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
-streamlit.write('The user entered ', fruit_choice)
-
+fruit_choice = streamlit.text_input('What fruit would you like information about?')
+if not fruit_choice:
+  streamlit.error("please select a fruit to get information.")
+#streamlit.write('The user entered ', fruit_choice)
+else:
+   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
+   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+   streamlit.dataframe(fruityvice_normalized)   
+    
+ except URLError as e:
+   streamlit.error()
 #import requests
 #fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
 #separate the base URL from the fruit name
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
+
 #streamlit.text(fruityvice_response.json()) --Raw JSON data
 
 # Normalize semi-structured JSON data into a flat table
-fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+
 # Display json data in the table format using dataframe
-streamlit.dataframe(fruityvice_normalized)
 
 #to stop the previous code from running again and again
 streamlit.stop()
